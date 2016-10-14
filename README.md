@@ -14,5 +14,5 @@ project file build.gradle
 module file build.gradle
 
 ```
-    compile 'com.github.AlphaKnife:RxCore:v0.1'
+    compile 'com.github.alphaKnife:RxCore:0.1.1'
 ```
