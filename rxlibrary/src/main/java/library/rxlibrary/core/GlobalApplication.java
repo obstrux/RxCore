@@ -2,6 +2,8 @@ package library.rxlibrary.core;
 
 import android.app.Application;
 
+import library.rxlibrary.utils.TUtil;
+
 /**
  * ClassName: GlobalApplication<p>
  * Author: blades<p>
@@ -16,6 +18,6 @@ public class GlobalApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        TUtil.initialize(this);
     }
 }

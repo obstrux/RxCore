@@ -16,7 +16,6 @@ import rx.functions.Action1;
  * Des: 将view事件转换成Observable处理 RxView<p>
  * CreateDate: 2016/7/6 10:38<p>
  * UpdateDate: 2016/7/6 10:38<p>
- *
  * @GitHub: https://github.com/AlphaKnife
  */
 

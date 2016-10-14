@@ -14,7 +14,6 @@ import static library.rxlibrary.utils.SystemUtils.isForeground;
  * UpdateTime: 2016/10/14 16:02<p>
  * GitHub: https://github.com/AlphaKnife
  */
-
 public abstract class CoreProRxActivity extends CoreRxActivity {
 
     /***
