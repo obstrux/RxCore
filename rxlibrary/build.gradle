@@ -1,6 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
-group='com.github.alphaKnife'
+group = 'com.github.alphaKnife'
+
+def support_version = '25.0.0'
 
 android {
     compileSdkVersion 23
@@ -23,6 +25,7 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    provided 'com.android.support:appcompat-v7:24.2.1'
+    provided "com.android.support:appcompat-v7:$support_version"
+    provided "com.android.support:recyclerview-v7:$support_version"
     provided 'io.reactivex:rxandroid:1.2.1'
 }
