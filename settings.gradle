@@ -1,1 +1,1 @@
-include ':rxlibrary',':app'
+include ':rxlibrary', ':demo'
