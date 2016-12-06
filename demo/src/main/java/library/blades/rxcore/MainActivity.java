@@ -22,8 +22,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    // End Of Content View Elements
-
     private void bindViews() {
         btn = (AppCompatButton) findViewById(R.id.btn_pro);
 

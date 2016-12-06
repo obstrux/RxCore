@@ -30,6 +30,7 @@ dependencies {
     compile deps.appcompat
     compile deps.recyclerview
     compile deps.rxandroid
+    compile deps.rxjava
     compile deps.fast_networking
     compile project(':rxlibrary')
 }

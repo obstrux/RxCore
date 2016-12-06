@@ -23,15 +23,15 @@ public class BaseActivity extends AppCompatActivity implements LifeCycler {
     protected BehaviorSubject<Event> subject = BehaviorSubject.create();
 
     @Override
+    public BehaviorSubject<Event> getEvent() {
+        return subject;
+    }
+
+    @Override
     protected void onDestroy() {
         if (subject != null) {
             subject.onNext(Event.DESTROY);
         }
         super.onDestroy();
-    }
-
-    @Override
-    public BehaviorSubject<Event> getEvent() {
-        return subject;
     }
 }

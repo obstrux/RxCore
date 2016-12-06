@@ -25,4 +25,5 @@ dependencies {
     provided deps.appcompat
     provided deps.recyclerview
     provided deps.rxandroid
+    provided deps.rxjava
 }
