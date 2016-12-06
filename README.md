@@ -130,3 +130,14 @@ public class ProgressActivity extends BaseActivity implements LoadingCall {
 .compose(RxHelper.initPro(this))
 ...
 ```
+
+#### 3、增加TransformManager,提供组合的transform操作
+###### 使用方法 (xxx是实现LoadingCall和LifeCycler接口的实现类)
+
+```
+...
+TransformManager.groupTrans(xxx)
+...
+
+```
+
