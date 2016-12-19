@@ -1,8 +1,10 @@
 package library.rxlibrary.helper;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.ObservableTransformer;
 import library.rxlibrary.rxcomponent.LifeCycler;
 import library.rxlibrary.rxcomponent.LoadingCall;
-import rx.Observable;
 
 /**
  * ClassName: TransformManager<p>
@@ -35,17 +37,16 @@ public class TransformManager {
         isShowPro = builder.isShowPro;
     }
 
-    public <T> Observable.Transformer<T, T> asGroup() {
-        return new Observable.Transformer<T, T>() {
+    public ObservableTransformer asGroup() {
+        return new ObservableTransformer() {
             @Override
-            public Observable<T> call(Observable<T> observable) {
-                observable = observable.compose(RxSchedulersHelper.applyIoToMain())
+            public ObservableSource apply(Observable upstream) {
+                upstream = upstream.compose(RxSchedulersHelper.applyIoToMain())
                         .compose(RxHelper.bindLife(lifeCycler));
                 if (isShowPro) {
-                    observable = observable.compose(RxHelper.initPro(loadingCall));
+                    upstream = upstream.compose(RxHelper.initPro(loadingCall));
                 }
-
-                return observable;
+                return upstream;
             }
         };
     }
@@ -55,7 +56,7 @@ public class TransformManager {
      *
      * @param object 回调接口
      */
-    public static <T> Observable.Transformer<T, T> groupTrans(Object object) {
+    public static ObservableTransformer groupTrans(Object object) {
         LoadingCall loadCall = null;
         if (object instanceof LoadingCall) {
             loadCall = (LoadingCall) object;

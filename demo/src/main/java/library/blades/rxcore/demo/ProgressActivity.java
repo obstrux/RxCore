@@ -4,8 +4,14 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import library.blades.rxcore.R;
 import library.blades.rxcore.core.BaseActivity;
+import library.rxlibrary.helper.TransformManager;
 import library.rxlibrary.rxcomponent.LoadingCall;
 
 /**
@@ -27,8 +33,30 @@ public class ProgressActivity extends BaseActivity implements LoadingCall {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress);
 
+        Observable.just("aaaa")
+                .delay(5, TimeUnit.SECONDS)
+                .compose(TransformManager.groupTrans(this))
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
+                    }
 
+                    @Override
+                    public void onNext(String s) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
 
     }
 

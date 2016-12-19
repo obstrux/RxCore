@@ -2,9 +2,9 @@ package library.blades.rxcore.core;
 
 import android.support.v7.app.AppCompatActivity;
 
+import io.reactivex.subjects.BehaviorSubject;
 import library.rxlibrary.core.Event;
 import library.rxlibrary.rxcomponent.LifeCycler;
-import rx.subjects.BehaviorSubject;
 
 /**
  * ClassName: BaseActivity<p>

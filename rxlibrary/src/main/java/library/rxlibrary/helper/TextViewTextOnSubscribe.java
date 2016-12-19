@@ -4,21 +4,24 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.TextView;
 
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.MainThreadSubscription;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.disposables.Disposable;
 
-import static rx.android.MainThreadSubscription.verifyMainThread;
+import static io.reactivex.android.MainThreadDisposable.verifyMainThread;
 
-final class TextViewTextOnSubscribe implements Observable.OnSubscribe<CharSequence> {
+
+final class TextViewTextOnSubscribe implements ObservableOnSubscribe<CharSequence> {
     final TextView view;
 
     TextViewTextOnSubscribe(TextView view) {
         this.view = view;
     }
 
+
     @Override
-    public void call(final Subscriber<? super CharSequence> subscriber) {
+    public void subscribe(final ObservableEmitter<CharSequence> subscriber) throws Exception {
+
         verifyMainThread();
 
         final TextWatcher watcher = new TextWatcher() {
@@ -33,21 +36,29 @@ final class TextViewTextOnSubscribe implements Observable.OnSubscribe<CharSequen
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (!subscriber.isUnsubscribed()) {
+                if (!subscriber.isDisposed()) {
                     subscriber.onNext(s);
                 }
             }
         };
+
         view.addTextChangedListener(watcher);
 
-        subscriber.add(new MainThreadSubscription() {
+        subscriber.setDisposable(new Disposable() {
             @Override
-            protected void onUnsubscribe() {
+            public void dispose() {
                 view.removeTextChangedListener(watcher);
+            }
+
+            @Override
+            public boolean isDisposed() {
+                return false;
             }
         });
 
         // Emit initial value.
         subscriber.onNext(view.getText());
     }
+
+
 }

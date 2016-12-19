@@ -24,6 +24,6 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     provided deps.appcompat
     provided deps.recyclerview
-    provided deps.rxandroid
-    provided deps.rxjava
+    provided deps.rxandroid2
+    provided deps.rxjava2
 }

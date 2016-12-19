@@ -3,14 +3,16 @@ package library.rxlibrary.helper;
 import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
 
-import rx.Observable;
-import rx.functions.Func1;
-import rx.functions.Func2;
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.BiFunction;
+import io.reactivex.functions.Function;
+
 
 /**
  * 访问异常，重试机制（5秒重试一次）
  */
-public class RetryWhenProcess implements Func1<Observable<? extends Throwable>, Observable<?>> {
+public class RetryWhenProcess implements Function<Observable<? extends Throwable>, Observable<?>> {
 
     private long mInterval;
 
@@ -19,28 +21,28 @@ public class RetryWhenProcess implements Func1<Observable<? extends Throwable>, 
     }
 
     @Override
-    public Observable<?> call(final Observable<? extends Throwable> observable) {
-        return observable.flatMap(new Func1<Throwable, Observable<?>>() {
+    public Observable<?> apply(final Observable<? extends Throwable> observable) throws Exception {
+        return observable.flatMap(new Function<Throwable, ObservableSource<?>>() {
             @Override
-            public Observable<?> call(Throwable throwable) {
-
-                return observable.flatMap(new Func1<Throwable, Observable<?>>() {
+            public ObservableSource<?> apply(Throwable throwable) throws Exception {
+                return observable.flatMap(new Function<Throwable, ObservableSource<?>>() {
                     @Override
-                    public Observable<?> call(Throwable throwable) {
+                    public ObservableSource<?> apply(Throwable throwable) throws Exception {
                         if (throwable instanceof UnknownHostException) {
                             return Observable.error(throwable);
                         }
-                        return Observable.just(throwable).zipWith(Observable.range(1, 5), new Func2<Throwable, Integer, Integer>() {
-                            @Override
-                            public Integer call(Throwable throwable, Integer i) {
-                                return i;
-                            }
-                        }).flatMap(new Func1<Integer, Observable<? extends Long>>() {
-                            @Override
-                            public Observable<? extends Long> call(Integer retryCount) {
-                                return Observable.timer((long) Math.pow(mInterval, retryCount), TimeUnit.SECONDS);
-                            }
-                        });
+                        return Observable.just(throwable)
+                                .zipWith(Observable.range(1, 5), new BiFunction<Throwable, Integer, Integer>() {
+                                    @Override
+                                    public Integer apply(Throwable throwable, Integer integer) throws Exception {
+                                        return integer;
+                                    }
+                                }).flatMap(new Function<Integer, ObservableSource<? extends Long>>() {
+                                    @Override
+                                    public ObservableSource<? extends Long> apply(Integer integer) throws Exception {
+                                        return Observable.timer((long) Math.pow(mInterval,integer), TimeUnit.SECONDS);
+                                    }
+                                });
                     }
                 });
             }

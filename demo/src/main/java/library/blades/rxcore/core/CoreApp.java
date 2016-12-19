@@ -1,7 +1,5 @@
 package library.blades.rxcore.core;
 
-import com.androidnetworking.AndroidNetworking;
-
 import library.rxlibrary.core.GlobalApplication;
 
 /**
@@ -18,6 +16,6 @@ public class CoreApp extends GlobalApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        AndroidNetworking.initialize(getApplicationContext());
+       // AndroidNetworking.initialize(getApplicationContext());
     }
 }

@@ -1,12 +1,16 @@
 package library.rxlibrary.helper;
 
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.ObservableTransformer;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Predicate;
 import library.rxlibrary.core.Event;
 import library.rxlibrary.rxcomponent.LifeCycler;
 import library.rxlibrary.rxcomponent.LoadingCall;
-import rx.Observable;
-import rx.functions.Action0;
-import rx.functions.Action1;
-import rx.functions.Func1;
+
 
 /**
  * ClassName: RxHelper<p>
@@ -22,33 +26,33 @@ public class RxHelper {
     /**
      * 进度条
      */
-    public static <T> Observable.Transformer initPro(final LoadingCall call) {
-        return new Observable.Transformer<T, T>() {
+    public static ObservableTransformer initPro(final LoadingCall call) {
+        return new ObservableTransformer() {
             @Override
-            public Observable<T> call(Observable<T> observable) {
-                return observable.doOnSubscribe(new Action0() {
+            public ObservableSource apply(Observable upstream) {
+                return upstream.doOnSubscribe(new Consumer<Disposable>() {
                     @Override
-                    public void call() {
+                    public void accept(Disposable disposable) throws Exception {
                         call.showLoading();
                     }
-                }).doOnTerminate(new Action0() {
+                }).doOnTerminate(new Action() {
                     @Override
-                    public void call() {
+                    public void run() throws Exception {
                         call.hideLoading();
                     }
-                }).doOnUnsubscribe(new Action0() {
+                }).doOnDispose(new Action() {
                     @Override
-                    public void call() {
+                    public void run() throws Exception {
                         call.hideLoading();
                     }
-                }).doOnCompleted(new Action0() {
+                }).doOnComplete(new Action() {
                     @Override
-                    public void call() {
+                    public void run() throws Exception {
                         call.hideLoading();
                     }
-                }).doOnError(new Action1<Throwable>() {
+                }).doOnError(new Consumer<Throwable>() {
                     @Override
-                    public void call(Throwable throwable) {
+                    public void accept(Throwable throwable) throws Exception {
                         call.hideLoading();
                     }
                 });
@@ -59,14 +63,14 @@ public class RxHelper {
     /**
      * 绑定生命周期
      */
-    public static <T> Observable.Transformer bindLife(final LifeCycler lifeCycler) {
-        return new Observable.Transformer<T, T>() {
+    public static ObservableTransformer bindLife(final LifeCycler lifeCycler) {
+        return new ObservableTransformer() {
             @Override
-            public Observable<T> call(Observable<T> observable) {
-                return observable.takeUntil(lifeCycler.getEvent()
-                        .skipWhile(new Func1<Event, Boolean>() {
+            public ObservableSource apply(Observable upstream) {
+                return upstream.takeUntil(lifeCycler.getEvent()
+                        .skipWhile(new Predicate<Event>() {
                             @Override
-                            public Boolean call(Event event) {
+                            public boolean test(Event event) throws Exception {
                                 return event != Event.DESTROY && event != Event.DESTROY_VIEW;
                             }
                         }));

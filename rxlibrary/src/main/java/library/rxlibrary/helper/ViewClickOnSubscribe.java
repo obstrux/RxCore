@@ -2,11 +2,11 @@ package library.rxlibrary.helper;
 
 import android.view.View;
 
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.MainThreadSubscription;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.disposables.Disposable;
 
-import static rx.android.MainThreadSubscription.verifyMainThread;
+import static io.reactivex.android.MainThreadDisposable.verifyMainThread;
 
 /**
  * ClassName: ViewClickOnSubscribe<p>
@@ -18,7 +18,7 @@ import static rx.android.MainThreadSubscription.verifyMainThread;
  * @GitHub: https://github.com/AlphaKnife
  */
 
-final class ViewClickOnSubscribe implements Observable.OnSubscribe<View> {
+final class ViewClickOnSubscribe implements ObservableOnSubscribe<View> {
     final View view;
 
     ViewClickOnSubscribe(View view) {
@@ -26,22 +26,27 @@ final class ViewClickOnSubscribe implements Observable.OnSubscribe<View> {
     }
 
     @Override
-    public void call(final Subscriber<? super View> subscriber) {
+    public void subscribe(final ObservableEmitter<View> subscriber) throws Exception {
         verifyMainThread();
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!subscriber.isUnsubscribed()) {
+                if (!subscriber.isDisposed()) {
                     subscriber.onNext(v);
                 }
             }
         };
         view.setOnClickListener(listener);
 
-        subscriber.add(new MainThreadSubscription() {
+        subscriber.setDisposable(new Disposable() {
             @Override
-            protected void onUnsubscribe() {
+            public void dispose() {
                 view.setOnClickListener(null);
+            }
+
+            @Override
+            public boolean isDisposed() {
+                return false;
             }
         });
     }

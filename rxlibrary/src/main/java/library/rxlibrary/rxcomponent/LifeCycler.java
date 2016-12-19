@@ -1,7 +1,7 @@
 package library.rxlibrary.rxcomponent;
 
+import io.reactivex.subjects.BehaviorSubject;
 import library.rxlibrary.core.Event;
-import rx.subjects.BehaviorSubject;
 
 /**
  * ClassName: LifeCycler<p>
@@ -16,6 +16,5 @@ public interface LifeCycler {
      * 获取结束事件
      */
     BehaviorSubject<Event> getEvent();
-
 
 }

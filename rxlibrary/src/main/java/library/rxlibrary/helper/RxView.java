@@ -6,9 +6,10 @@ import android.widget.TextView;
 
 import java.util.concurrent.TimeUnit;
 
-import rx.Observable;
-import rx.Subscription;
-import rx.functions.Action1;
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+
 
 /**
  * ClassName: RxView<p>
@@ -16,6 +17,7 @@ import rx.functions.Action1;
  * Des: 将view事件转换成Observable处理 RxView<p>
  * CreateDate: 2016/7/6 10:38<p>
  * UpdateDate: 2016/7/6 10:38<p>
+ *
  * @GitHub: https://github.com/AlphaKnife
  */
 
@@ -25,21 +27,18 @@ public class RxView {
 
     /**
      * view click
-     *
-     * @param view
-     * @return
      */
     public static Observable<View> click(View view) {
         return Observable.create(new ViewClickOnSubscribe(view))
                 .throttleFirst(THROTTLEFIRST_TIME, TimeUnit.MILLISECONDS);
     }
 
-    public static Subscription click(View view, Action1<View> action1) {
+    public static Disposable click(View view, Consumer<View> action1) {
         return Observable.create(new ViewClickOnSubscribe(view))
                 .throttleFirst(THROTTLEFIRST_TIME, TimeUnit.MILLISECONDS)
-                .subscribe(action1, new Action1<Throwable>() {
+                .subscribe(action1, new Consumer<Throwable>() {
                     @Override
-                    public void call(Throwable throwable) {
+                    public void accept(Throwable throwable) throws Exception {
                         Log.i(RxView.class.getSimpleName(), "call: " + throwable.getMessage());
                     }
                 });
@@ -47,9 +46,6 @@ public class RxView {
 
     /**
      * view textChange
-     *
-     * @param view
-     * @return
      */
     public static Observable<CharSequence> textChange(TextView view) {
         return Observable.create(new TextViewTextOnSubscribe(view));

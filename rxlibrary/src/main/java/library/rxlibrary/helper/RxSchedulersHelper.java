@@ -1,26 +1,27 @@
 package library.rxlibrary.helper;
 
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.ObservableTransformer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class RxSchedulersHelper {
 
-    static final Observable.Transformer schedulersTransformer = new Observable.Transformer() {
+    static final ObservableTransformer schedulersTransformer = new ObservableTransformer() {
+
         @Override
-        public Object call(Object observable) {
-            return ((Observable) observable).subscribeOn(Schedulers.io())
+        public ObservableSource apply(Observable upstream) {
+            return upstream.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .unsubscribeOn(Schedulers.io());
         }
     };
 
 
-    public static final <T> Observable.Transformer<T, T> applyIoToMain() {
+    public static final ObservableTransformer applyIoToMain() {
         return schedulersTransformer;
     }
-
 
 }
