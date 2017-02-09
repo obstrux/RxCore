@@ -1,4 +1,4 @@
-package library.rxlibrary.core;
+package library.rxlibrary.event;
 
 /**
  * ClassName: Event<p>

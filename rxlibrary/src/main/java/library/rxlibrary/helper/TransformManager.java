@@ -3,6 +3,9 @@ package library.rxlibrary.helper;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
+import io.reactivex.Single;
+import io.reactivex.SingleSource;
+import io.reactivex.SingleTransformer;
 import library.rxlibrary.rxcomponent.LifeCycler;
 import library.rxlibrary.rxcomponent.LoadingCall;
 
@@ -79,6 +82,51 @@ public class TransformManager {
                 .asGroup();
     }
 
+    public SingleTransformer asSingleGroup() {
+        return new SingleTransformer() {
+            @Override
+            public SingleSource apply(Single upstream) {
+
+                upstream = upstream.compose(RxSchedulersHelper.applySingle());
+
+                if (isShowPro) {
+                    upstream = upstream.compose(RxHelper.initSinglePro(loadingCall));
+                }
+                return upstream;
+            }
+        };
+    }
+
+    /**
+     * 线程切换 生命周期 进度对话框
+     *
+     * @param object 回调接口
+     */
+    public static SingleTransformer groupSingleTrans(Object object) {
+
+        LoadingCall loadCall = null;
+
+        if (object instanceof LoadingCall) {
+            loadCall = (LoadingCall) object;
+        } else {
+            throw new RuntimeException("the component must implement the interface LoadingCall !!!");
+        }
+
+        LifeCycler lifeCycler = null;
+
+        if (object instanceof LifeCycler) {
+            lifeCycler = (LifeCycler) object;
+        } else {
+            throw new RuntimeException("the component must implement the interface LifeCycler !!!");
+        }
+        return TransformManager.newBuilder()
+                .withIsShowPro(true)
+                .withLifeCycler(lifeCycler)
+                .withLoadingCall(loadCall)
+                .build()
+                .asSingleGroup();
+    }
+
 
     public static Builder newBuilder() {
         return new Builder();
@@ -86,8 +134,11 @@ public class TransformManager {
 
 
     public static final class Builder {
+
         private boolean isShowPro = false;
+
         private LoadingCall loadingCall;
+
         private LifeCycler lifeCycler;
 
         private Builder() {

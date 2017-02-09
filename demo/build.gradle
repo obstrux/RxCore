@@ -31,6 +31,7 @@ dependencies {
     compile deps.recyclerview
     compile deps.rxandroid2
     compile deps.rxjava2
+    compile 'com.github.swordmagic:rxcore:0.1-beta1'
 //    compile deps.fast_networking
-    compile project(':rxlibrary')
+  //  compile project(':rxlibrary')
 }

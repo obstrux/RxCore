@@ -3,11 +3,14 @@ package library.rxlibrary.helper;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
+import io.reactivex.Single;
+import io.reactivex.SingleSource;
+import io.reactivex.SingleTransformer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Predicate;
-import library.rxlibrary.core.Event;
+import library.rxlibrary.event.Event;
 import library.rxlibrary.rxcomponent.LifeCycler;
 import library.rxlibrary.rxcomponent.LoadingCall;
 
@@ -77,4 +80,36 @@ public class RxHelper {
             }
         };
     }
+
+
+    /**
+     * 进度条
+     */
+    public static SingleTransformer initSinglePro(final LoadingCall call) {
+        return new SingleTransformer() {
+
+            @Override
+            public SingleSource apply(Single upstream) {
+                return upstream.doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        call.showLoading();
+                    }
+                }).doOnDispose(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        call.hideLoading();
+                    }
+                }).doOnError(new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        call.hideLoading();
+                    }
+                });
+            }
+        };
+    }
+
+
+
 }
