@@ -16,7 +16,7 @@ import rx.subjects.BehaviorSubject;
  * UpdateTime: 2016/10/14 15:35<p>
  * GitHub: https://github.com/AlphaKnife
  */
-
+@Deprecated
 public class CoreRxActivity extends AppCompatActivity {
 
     /**
@@ -44,7 +44,6 @@ public class CoreRxActivity extends AppCompatActivity {
      * 绑定生命周期
      *
      * @param <T> 返回类型
-     * @return
      */
     protected <T> Observable.Transformer<T, T> bindLife() {
         return transformer;

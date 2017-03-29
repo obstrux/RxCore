@@ -13,7 +13,7 @@ import rx.functions.Action1;
  * UpdateTime: 2016/10/14 16:10<p>
  * GitHub: https://github.com/AlphaKnife
  */
-
+@Deprecated
 public abstract class CoreProRxFragment extends CoreRxFragment {
 
 
