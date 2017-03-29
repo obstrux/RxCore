@@ -1,36 +1,35 @@
-package library.blades.rxcore;
+package library.blades.rxcore
 
 /**
  * 返回的基础数据类型
  * Created by sharpblades on 2016/3/5.
  */
-public class BaseEntity<T> {
+class BaseEntity<T> {
 
     /**
      * 返回的CODE
      */
-    public String code;
+    var code: String? = null
     /**
      * 返回的msg
      */
-    public String message;
+    var message: String? = null
     /**
      * 返回的Title
      */
-    public String title;
+    var title: String? = null
     /**
      * 返回的data
      */
-    public T data;
+    var data: T? = null
 
 
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "BaseEntity{" +
                 "code='" + code + '\'' +
                 ", message='" + message + '\'' +
                 ", title='" + title + '\'' +
                 ", data=" + data +
-                '}';
+                '}'
     }
 }
