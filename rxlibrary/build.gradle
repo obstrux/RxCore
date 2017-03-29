@@ -6,15 +6,14 @@ group = 'com.github.alphaKnife'
 
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 'android-O'
+    buildToolsVersion '26.0.0 rc1'
 
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
-
     }
     buildTypes {
         release {
@@ -24,6 +23,10 @@ android {
     }
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+    }
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
     }
 }
 
