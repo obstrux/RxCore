@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/RxCore.iml" filepath="$PROJECT_DIR$/RxCore.iml" />
       <module fileurl="file://$PROJECT_DIR$/demo/demo.iml" filepath="$PROJECT_DIR$/demo/demo.iml" />
+      <module fileurl="file://D:\android\RxCore\demo\demo.iml" filepath="D:\android\RxCore\demo\demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/rxlibrary/rxlibrary.iml" filepath="$PROJECT_DIR$/rxlibrary/rxlibrary.iml" />
     </modules>
   </component>
